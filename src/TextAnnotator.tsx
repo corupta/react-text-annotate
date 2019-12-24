@@ -33,20 +33,9 @@ export interface TextAnnotatorProps extends Omit<React.HTMLAttributes<HTMLDivEle
 }
 
 class TextAnnotator extends React.Component<TextAnnotatorProps, {}> {
-  rootRef: React.RefObject<HTMLDivElement>
 
   constructor(props) {
     super(props)
-
-    this.rootRef = React.createRef()
-  }
-
-  componentDidMount() {
-    this.rootRef.current.addEventListener('mouseup', this.handleMouseUp)
-  }
-
-  componentWillUnmount() {
-    this.rootRef.current.removeEventListener('mouseup', this.handleMouseUp)
   }
 
   handleMouseUp = () => {
@@ -95,7 +84,7 @@ class TextAnnotator extends React.Component<TextAnnotatorProps, {}> {
     const {content, value, style} = this.props
     const splits = splitWithOffsets(content, value)
     return (
-      <div style={style} ref={this.rootRef}>
+      <div style={style} onMouseUp={this.handleMouseUp}>
         {splits.map(split => (
           <Split key={`${split.start}-${split.end}`} {...split} onClick={this.handleSplitClick} />
         ))}

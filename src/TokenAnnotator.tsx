@@ -34,20 +34,9 @@ class TokenAnnotator extends React.Component<TokenAnnotatorProps, {}> {
     renderMark: props => <Mark {...props} />,
   }
 
-  rootRef: React.RefObject<HTMLDivElement>
-
   constructor(props) {
     super(props)
 
-    this.rootRef = React.createRef()
-  }
-
-  componentDidMount() {
-    this.rootRef.current.addEventListener('mouseup', this.handleMouseUp)
-  }
-
-  componentWillUnmount() {
-    this.rootRef.current.removeEventListener('mouseup', this.handleMouseUp)
   }
 
   handleMouseUp = () => {
@@ -101,7 +90,7 @@ class TokenAnnotator extends React.Component<TokenAnnotatorProps, {}> {
     const {tokens, value, renderMark, onChange, getSpan, ...divProps} = this.props
     const splits = splitTokensWithOffsets(tokens, value)
     return (
-      <div ref={this.rootRef} {...divProps}>
+      <div onMouseUp={this.handleMouseUp} {...divProps}>
         {splits.map((split, i) =>
           split.mark ? (
             renderMark({
